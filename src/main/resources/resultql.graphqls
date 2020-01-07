@@ -1,0 +1,33 @@
+type GoogleBookResult {
+  totalItems: Int,
+  items: [Book]
+}
+
+type Book {
+  volumeInfo: BookInfo
+}
+
+type BookInfo {
+  title: String,
+  authors: [String],
+  publisher: String,
+  industryIdentifiers: [IndustryIdentifier],
+  pageCount: Int,
+  averageRating: Float,
+  imageLinks: ImageLink,
+  language: String
+}
+
+type IndustryIdentifier {
+  type: String,
+  identifier: String
+}
+
+type ImageLink {
+  smallThumbnail: String,
+  thumbnail: String
+}
+
+type Query {
+	googleBookResultByISBN( isbn: String ): GoogleBookResult
+}
