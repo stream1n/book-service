@@ -1,12 +1,13 @@
 package ai.streamin.bookservice.book;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.io.Serializable;
-
 @Data
-public class Book implements Serializable {
-
-  private BookInfo volumeInfo;
-
+@AllArgsConstructor
+public class Book {
+  private String name;
+  private String author;
+  private String pictureURL;
+  private String isbn;
 }

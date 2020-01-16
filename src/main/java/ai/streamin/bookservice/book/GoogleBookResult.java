@@ -10,7 +10,7 @@ import java.util.List;
 public class GoogleBookResult implements Serializable {
 
   int totalItems;
-  List<Book> items = new ArrayList();
+  List<GoogleBook> items = new ArrayList();
 
 }
 
