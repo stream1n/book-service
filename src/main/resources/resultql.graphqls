@@ -30,4 +30,6 @@ type ImageLink {
 
 type Query {
 	googleBookResultByISBN( isbn: String ): GoogleBookResult
+  googleBookResultByAuthor( author: String ): GoogleBookResult
+  googleBookResultByTitle( title: String ): GoogleBookResult
 }

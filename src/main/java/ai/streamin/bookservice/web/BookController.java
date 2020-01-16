@@ -1,10 +1,8 @@
 package ai.streamin.bookservice.web;
 
-import ai.streamin.bookservice.book.Book;
 import ai.streamin.bookservice.book.GoogleBookResult;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,7 +16,13 @@ import java.time.Duration;
 public class BookController {
 
   @Value("${google.books.api.isbn.query}")
-  private String googleQuery;
+  private String googleISBNQuery;
+
+  @Value("${google.books.api.author.query}")
+  private String googleAuthorQuery;
+
+  @Value("${google.books.api.title.query}")
+  private String googleTitleQuery;
 
   private final RestTemplate restTemplate;
 
@@ -29,20 +33,28 @@ public class BookController {
       .build();
   }
 
-  @GetMapping("/isbn")
+  @GetMapping("/search/isbn")
   @ResponseBody
-  public Book getByISBN(@RequestParam(name="isbn", required=true) String isbn) {
-    String url = googleQuery + isbn;
-    ResponseEntity<GoogleBookResult> response = this.restTemplate.getForEntity(url, GoogleBookResult.class);
-    if (response.getStatusCode() == HttpStatus.OK) {
-      GoogleBookResult result = response.getBody();
-      return new Book(result.getItems().get(0).getVolumeInfo().getTitle(),
-        result.getItems().get(0).getVolumeInfo().getAuthors().get(0),
-        result.getItems().get(0).getVolumeInfo().getImageLinks().getSmallThumbnail(),
-        isbn);
-    } else {
-      return null;
-    }
+  public ResponseEntity<GoogleBookResult> getByISBN(@RequestParam(name="isbn", required=true) String isbn) {
+    String url = googleISBNQuery + isbn;
+    ResponseEntity<GoogleBookResult> result = this.restTemplate.getForEntity(url, GoogleBookResult.class);
+    return ResponseEntity.status(result.getStatusCode()).body(result.getBody());
+  }
+
+  @GetMapping("/search/author")
+  @ResponseBody
+  public ResponseEntity<GoogleBookResult> getByAuthor(@RequestParam(name="author", required=true) String author) {
+    String url = googleAuthorQuery + author;
+    ResponseEntity<GoogleBookResult> result = this.restTemplate.getForEntity(url, GoogleBookResult.class);
+    return ResponseEntity.status(result.getStatusCode()).body(result.getBody());
+  }
+
+  @GetMapping("/search/title")
+  @ResponseBody
+  public ResponseEntity<GoogleBookResult> getByTitle(@RequestParam(name="title", required=true) String title) {
+    String url = googleTitleQuery + title;
+    ResponseEntity<GoogleBookResult> result = this.restTemplate.getForEntity(url, GoogleBookResult.class);
+    return ResponseEntity.status(result.getStatusCode()).body(result.getBody());
   }
 
 }

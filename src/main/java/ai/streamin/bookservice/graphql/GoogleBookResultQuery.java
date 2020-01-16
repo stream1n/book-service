@@ -18,4 +18,12 @@ public class GoogleBookResultQuery implements GraphQLQueryResolver {
         return this.bookInfoService.getGoogleBookResultByISBN(isbn);
     }
 
+  public GoogleBookResult getGoogleBookResultByAuthor(String author) {
+    return this.bookInfoService.getGoogleBookResultByAuthor(author);
+  }
+
+  public GoogleBookResult getGoogleBookResultByTitle(String title) {
+    return this.bookInfoService.getGoogleBookResultByTitle(title);
+  }
+
 }

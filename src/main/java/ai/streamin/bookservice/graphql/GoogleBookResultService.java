@@ -17,7 +17,13 @@ import java.time.Duration;
 public class GoogleBookResultService {
 
   @Value("${google.books.api.isbn.query}")
-  private String googleQuery;
+  private String googleISBNQuery;
+
+  @Value("${google.books.api.author.query}")
+  private String googleAuthorQuery;
+
+  @Value("${google.books.api.title.query}")
+  private String googleTitleQuery;
 
   private final RestTemplate restTemplate;
 
@@ -29,13 +35,21 @@ public class GoogleBookResultService {
   }
 
   public GoogleBookResult getGoogleBookResultByISBN(String isbn) {
-    String url = googleQuery + isbn;
-    ResponseEntity<GoogleBookResult> response = this.restTemplate.getForEntity(url, GoogleBookResult.class);
-    if (response.getStatusCode() == HttpStatus.OK) {
-      return response.getBody();
-    } else {
-      return null;
-    }
+    String url = googleISBNQuery + isbn;
+    ResponseEntity<GoogleBookResult> result = this.restTemplate.getForEntity(url, GoogleBookResult.class);
+    return result.getBody();
+  }
+
+  public GoogleBookResult getGoogleBookResultByAuthor(String author) {
+    String url = googleAuthorQuery + author;
+    ResponseEntity<GoogleBookResult> result = this.restTemplate.getForEntity(url, GoogleBookResult.class);
+    return result.getBody();
+  }
+
+  public GoogleBookResult getGoogleBookResultByTitle(String title) {
+    String url = googleTitleQuery + title;
+    ResponseEntity<GoogleBookResult> result = this.restTemplate.getForEntity(url, GoogleBookResult.class);
+    return result.getBody();
   }
 
 }
